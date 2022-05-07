@@ -15,17 +15,26 @@
           width="40"
         />
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+        <v-btn
+          elevation="2"
+          small
+          color="secondary"
+          to="/"
+        >
+          Home
+        </v-btn>
       </div>
 
       <v-spacer></v-spacer>
+
+      <v-btn
+        elevation="2"
+        small
+        color="secondary"
+        to="/Beers"
+      >
+        Beers
+      </v-btn>
 
     </v-app-bar>
 
