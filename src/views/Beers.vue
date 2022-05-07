@@ -2,22 +2,25 @@
   <v-container>
     <v-row class="text-left vertical-align">
       <v-col cols="12">
-        <h1>
+        <h2>
           List of beers
-        </h1>
+        </h2>
       </v-col>
     </v-row>
     <v-row class="text-left vertical-align">
       <v-col cols="3">
         <v-text-field
           v-model.trim="search"
+          dense
           label="Name"
+          @keyup.enter.prevent="getBeers()"
         >
           <template v-slot:append>
             <v-icon
-              dense
+              dens
               color="green darken-4"
               class="cursor-pointer"
+              @click="getBeers()"
             >
               mdi-magnify
             </v-icon>
@@ -25,13 +28,13 @@
         </v-text-field>
       </v-col>
     </v-row>
-    <beers-list :beers="beers" />
+    <beers-list @get-beers="getBeers()" />
   </v-container>
 </template>
 
 <script>
+import BeerService from '../services/BeerService'
 import BeersList from '../components/BeersList'
-import { api } from '../plugins/axiosConfig'
 
 export default {
   name: 'Beers',
@@ -40,28 +43,41 @@ export default {
   },
   data () {
     return {
-      beers: [],
       search: ''
     }
   },
   mounted () {
-    console.log('estas en beers')
     this.getBeers()
   },
   methods: {
     async getBeers () {
-      const filtros = new URLSearchParams()
-      filtros.append('page', '1')
-      filtros.append('per_page', '20')
+      this.$store.dispatch('showLoaderAction', true)
+      const filtros = this.handleFilters()
       const params = { params: filtros }
-      await api.get('beers', params).then((response) => {
-        console.log(response)
-        if (response.status !== 200) {
-          console.log('ocurrio un error')
-        }
-        this.beers = response.data
-        this.beers.map(b => console.log(b.id))
-      })
+      await BeerService.getBeers('beers', params)
+        .then(response => {
+          if (response.status !== 200) {
+            console.log('ocurrio un error')
+          }
+          response.data.map(b => console.log(b.id))
+          console.log(response.data.length)
+          this.$store.dispatch('showLoaderAction', false)
+        })
+        .catch((e) => {
+          console.log(e)
+          this.$store.dispatch('showLoaderAction', false)
+        })
+    },
+    handleFilters () {
+      const filtros = new URLSearchParams()
+      filtros.append('page', this.$store.getters.getPage)
+      filtros.append('per_page', this.$store.getters.getRowsPerPage)
+
+      if (this.search) {
+        filtros.append('beer_name', this.search)
+      }
+
+      return filtros
     }
   }
 }

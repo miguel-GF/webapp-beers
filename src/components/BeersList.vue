@@ -4,11 +4,11 @@
       <v-data-table
         fixed-header
         :headers="headers"
-        :items="beers"
-        :items-per-page="20"
+        :items="$store.getters.getBeers"
+        :items-per-page="$store.getters.getRowsPerPage"
         :hide-default-footer="true"
         class="elevation-1"
-        height="60vh"
+        height="56vh"
       >
         <template v-slot:item.id="{ item }">
           <router-link :to="'/Beers/Detail/' + item.id">
@@ -23,20 +23,25 @@
         <template v-slot:footer>
           <v-container class="pa20">
           <v-row class="text-left vertical-align">
-            Total registers: {{ beers.length }}
+            Total registers: {{ $store.getters.getBeers.length }}
+            Page: {{ $store.getters.getPage }}
             <v-icon
               dense
               color="green darken-4"
               class="cursor-pointer"
+              @click="previousPage()"
+              :disabled="$store.getters.getPage === 1"
             >
-              mdi-magnify
+              mdi-chevron-left
             </v-icon>
             <v-icon
               dense
               color="green darken-4"
               class="cursor-pointer"
+              @click="nextPage()"
+              :disabled="$store.getters.getBeers.length < 20"
             >
-              mdi-magnify
+              mdi-chevron-right
             </v-icon>
           </v-row>
           </v-container>
@@ -49,12 +54,6 @@
 <script>
 export default {
   name: 'Beerlist',
-  props: {
-    beers: {
-      type: Array,
-      default: () => []
-    }
-  },
   data () {
     return {
       headers: [
@@ -89,6 +88,16 @@ export default {
           value: 'first_brewed'
         }
       ]
+    }
+  },
+  methods: {
+    nextPage () {
+      this.$store.dispatch('nextPageAction')
+      this.$emit('get-beers')
+    },
+    previousPage () {
+      this.$store.dispatch('previousPageAction')
+      this.$emit('get-beers')
     }
   }
 }
