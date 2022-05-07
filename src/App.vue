@@ -6,23 +6,16 @@
       dark
     >
       <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-btn
-          elevation="2"
-          small
-          color="secondary"
-          to="/"
-        >
-          Home
-        </v-btn>
+        <router-link to="/">
+          <v-img
+            alt="Vuetify Logo"
+            class="shrink mr-2"
+            contain
+            src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+            transition="scale-transition"
+            width="40"
+          />
+        </router-link>
       </div>
 
       <v-spacer></v-spacer>
@@ -38,6 +31,11 @@
 
     </v-app-bar>
 
+    <loader
+      :mostrar="$store.getters.getLoader"
+      :mensaje="'Getting beers ..'"
+    />
+
     <v-main>
       <router-view/>
     </v-main>
@@ -45,12 +43,11 @@
 </template>
 
 <script>
-
 export default {
   name: 'App',
 
-  data: () => ({
-    //
-  })
+  data () {
+    return {}
+  }
 }
 </script>
