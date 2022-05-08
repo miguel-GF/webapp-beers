@@ -1,5 +1,5 @@
 <template>
-  <v-row class="text-center vertical-align">
+  <v-row class="text-center">
     <v-col cols="12">
       <v-data-table
         fixed-header
@@ -7,24 +7,35 @@
         :items="$store.getters.getBeers"
         :items-per-page="$store.getters.getRowsPerPage"
         :hide-default-footer="true"
-        class="elevation-1"
-        height="56vh"
+        class="elevation-1 main-table"
+        :height="$store.getters.getShowFilters === true ? '51vh' : '65vh'"
       >
         <template v-slot:item.id="{ item }">
-          <router-link :to="'/Beers/Detail/' + item.id">
-            <v-img :src="item.image_url" max-width="40" :aspect-ratio="1/1"  />
-          </router-link>
+          <td class="w50 text-left">
+          <v-tooltip class="w50" bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <router-link :to="'/Beers/Detail/' + item.id">
+                <v-img :src="item.image_url" max-width="40" min-width="40" :aspect-ratio="1/1" v-bind="attrs" v-on="on" />
+              </router-link>
+            </template>
+            <span>See more</span>
+          </v-tooltip>
+          </td>
         </template>
         <template v-slot:item.name="{ item }">
-          <td class="w200 text-left">
+          <td class="w300 text-left">
             {{ item.name || '--' }}
           </td>
         </template>
         <template v-slot:footer>
-          <v-container class="pa20">
-          <v-row class="text-left vertical-align">
-            Total registers: {{ $store.getters.getBeers.length }}
-            Page: {{ $store.getters.getPage }}
+          <v-container class="text-right">
+          <v-row class="justify-end pa-2">
+            <div class="mr-6">
+              Total registers: {{ $store.getters.getBeers.length }}
+            </div>
+            <div class="mr-6">
+              Page: {{ $store.getters.getPage }}
+            </div>
             <v-icon
               dense
               color="green darken-4"
@@ -102,16 +113,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .theme--light.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
-    text-transform: uppercase;
-    background-color: #b1b1b1;
-  }
-  .w200 {
-    width: 300px;
-  }
-  .cursor-pointer {
-    cursor: pointer;
-  }
-</style>

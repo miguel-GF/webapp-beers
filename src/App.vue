@@ -27,6 +27,9 @@
         to="/Beers"
       >
         Beers
+        <v-icon class="ml-2">
+          mdi-glass-mug-variant
+        </v-icon>
       </v-btn>
 
     </v-app-bar>
