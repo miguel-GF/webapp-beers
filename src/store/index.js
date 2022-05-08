@@ -8,7 +8,15 @@ export default new Vuex.Store({
     rowsPerPage: 20,
     page: 1,
     beers: [],
-    loader: false
+    loader: false,
+    showFilters: false,
+    filters: {
+      name: '',
+      abv_gt: '',
+      abv_lt: '',
+      brewed_before: '',
+      brewed_after: ''
+    }
   },
   mutations: {
     // Note: methods for pagination
@@ -32,6 +40,35 @@ export default new Vuex.Store({
     // Note: methods for loader
     showLoader (state, bool) {
       state.loader = bool
+    },
+    // Note: methods for filters
+    changeFilters (state, params) {
+      if (params.name) {
+        state.filters.name = params.name
+      }
+      if (params.abv_gt) {
+        state.filters.abv_gt = params.abv_gt
+      }
+      if (params.abv_lt) {
+        state.filters.abv_lt = params.abv_lt
+      }
+      if (params.brewed_before) {
+        state.filters.brewed_before = params.brewed_before
+      }
+      if (params.brewed_after) {
+        state.filters.brewed_after = params.brewed_after
+      }
+    },
+    refreshFilters (state) {
+      state.filters.name = ''
+      state.filters.abv_gt = ''
+      state.filters.abv_lt = ''
+      state.filters.brewed_before = ''
+      state.filters.brewed_after = ''
+    },
+    // Note: methods for loader
+    showFilters (state) {
+      state.showFilters = !state.showFilters
     }
   },
   actions: {
@@ -52,6 +89,16 @@ export default new Vuex.Store({
     // Note: methods for loader
     showLoaderAction (context, bool) {
       context.commit('showLoader', bool)
+    },
+    // Note: methods for filters
+    changeFiltersAction (context, params) {
+      context.commit('changeFilters', params)
+    },
+    refreshFiltersAction (context) {
+      context.commit('refreshFilters')
+    },
+    showFiltersAction (context) {
+      context.commit('showFilters')
     }
   },
   modules: {
@@ -71,6 +118,13 @@ export default new Vuex.Store({
     // Note: methods for loader
     getLoader (state) {
       return state.loader
+    },
+    // Note: methods for filters
+    getFilters (state) {
+      return state.filters
+    },
+    getShowFilters (state) {
+      return state.showFilters
     }
   }
 })
