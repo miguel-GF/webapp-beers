@@ -48,7 +48,7 @@
     </v-row>
     <v-container v-if="$store.getters.getShowFilters === true" class="overflow-x-auto">
     <v-row class="text-left">
-      <v-col lg="2" sm="4" xs="4">
+      <v-col cols="6" lg="2" sm="4" xs="4">
         <v-text-field
           v-model.trim="filters.name"
           dense
@@ -58,7 +58,7 @@
         >
         </v-text-field>
       </v-col>
-      <v-col lg="2" sm="4" xs="4">
+      <v-col cols="3" lg="2" sm="4" xs="4">
         <v-text-field
           v-model.trim="filters.abv_gt"
           dense
@@ -69,7 +69,7 @@
         >
         </v-text-field>
       </v-col>
-      <v-col lg="2" sm="4" xs="4">
+      <v-col cols="3" lg="2" sm="4" xs="4">
         <v-text-field
           type="number"
           min="0"
@@ -82,7 +82,7 @@
         >
         </v-text-field>
       </v-col>
-      <v-col lg="2" sm="4" xs="4">
+      <v-col cols="4" lg="2" sm="4" xs="4">
         <v-text-field
           v-model.trim="filters.brewed_after"
           dense
@@ -94,7 +94,7 @@
         >
         </v-text-field>
       </v-col>
-      <v-col lg="2" sm="4" xs="4">
+      <v-col cols="4" lg="2" sm="4" xs="4">
         <v-text-field
           v-model.trim="filters.brewed_before"
           dense
