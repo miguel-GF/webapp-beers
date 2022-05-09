@@ -1,5 +1,5 @@
 # webapp-beers
-Pequeño sistema para mostrar y buscar información sobre cervezas.
+Pequeño sistema para mostrar y buscar información sobre cervezas con vue utilizando vuetify y vuex.
 
 ## Project setup
 ```
