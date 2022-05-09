@@ -15,7 +15,8 @@ export default new Vuex.Store({
       abv_gt: '',
       abv_lt: '',
       brewed_before: '',
-      brewed_after: ''
+      brewed_after: '',
+      food: ''
     }
   },
   mutations: {
@@ -58,6 +59,9 @@ export default new Vuex.Store({
       if (params.brewed_after) {
         state.filters.brewed_after = params.brewed_after
       }
+      if (params.food) {
+        state.filters.food = params.food
+      }
     },
     refreshFilters (state) {
       state.filters.name = ''
@@ -65,6 +69,7 @@ export default new Vuex.Store({
       state.filters.abv_lt = ''
       state.filters.brewed_before = ''
       state.filters.brewed_after = ''
+      state.filters.food = ''
     },
     // Note: methods for loader
     showFilters (state) {
