@@ -3,12 +3,13 @@
     <v-col cols="12">
       <v-data-table
         fixed-header
+        class="elevation-1 main-table"
+        sort-by="name"
         :headers="headers"
         :items="$store.getters.getBeers"
         :items-per-page="$store.getters.getRowsPerPage"
         :hide-default-footer="true"
-        class="elevation-1 main-table"
-        :height="$store.getters.getShowFilters === true ? '51vh' : '65vh'"
+        :height="$store.getters.getShowFilters === true ? '49vh' : '65vh'"
       >
         <template v-slot:item.id="{ item }">
           <td class="w50 text-left">
@@ -20,11 +21,6 @@
             </template>
             <span>See more</span>
           </v-tooltip>
-          </td>
-        </template>
-        <template v-slot:item.name="{ item }">
-          <td class="w300 text-left">
-            {{ item.name || '--' }}
           </td>
         </template>
         <template v-slot:footer>
@@ -78,7 +74,8 @@ export default {
           text: 'name',
           align: 'start',
           sortable: true,
-          value: 'name'
+          value: 'name',
+          width: 300
         },
         {
           text: 'Abv',
@@ -96,7 +93,15 @@ export default {
           text: 'First brewed',
           align: 'start',
           sortable: true,
-          value: 'first_brewed'
+          value: 'first_brewed',
+          width: 150
+        },
+        {
+          text: 'Food pairing',
+          align: 'start',
+          sortable: false,
+          value: 'food_pairing',
+          width: 350
         }
       ]
     }

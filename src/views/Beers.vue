@@ -46,68 +46,93 @@
         </v-row>
       </v-col>
     </v-row>
-    <v-container v-if="$store.getters.getShowFilters === true" class="overflow-x-auto">
+    <v-container v-if="$store.getters.getShowFilters === true" class="overflow-x-visible">
     <v-row class="text-left">
-      <v-col cols="6" lg="2" sm="4" xs="4">
-        <v-text-field
-          v-model.trim="filters.name"
-          dense
-          outlined
-          label="Name"
-          @keyup.enter.prevent="getBeers()"
-        >
-        </v-text-field>
+      <v-col cols="10 row" sm="9">
+        <!-- Firs row -->
+        <v-col cols="7" xl="7" lg="7" md="7" sm="12" xs="12" class="pa-0">
+          <v-row class="text-left">
+            <v-col cols="2" class="body-2">
+              <span>Between</span>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                v-model.trim="filters.abv_gt"
+                dense
+                outlined
+                label="Abv min"
+                @keypress=validateNumber($event)
+                @keyup.enter.prevent="getBeers()"
+              />
+            </v-col>
+            <v-col cols="1" class="body-2">
+              <span>and</span>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                v-model.trim="filters.abv_lt"
+                dense
+                outlined
+                label="Abv max"
+                @keypress=validateNumber($event)
+                @keyup.enter.prevent="getBeers()"
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="5" xl="5" lg="5" md="5" sm="12" xs="12" class="pa-0">
+          <v-row class="text-left">
+            <v-col cols="4" class="body-2">
+              <span>Food pairing</span>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model.trim="filters.food"
+                dense
+                outlined
+                label="Food name"
+                @keyup.enter.prevent="getBeers()"
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+        <!-- Second row -->
+        <v-col cols="7" xl="7" lg="7" md="7" sm="12" xs="12" class="pa-0">
+          <v-row class="text-left">
+            <v-col cols="2" class="body-2">
+              <span>Between</span>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                v-model.trim="filters.brewed_after"
+                dense
+                outlined
+                label="Brewed min"
+                placeholder="MM/YYYY"
+                v-mask="'##/####'"
+                @keyup.enter.prevent="getBeers()"
+              />
+            </v-col>
+            <v-col cols="1" class="body-2">
+              <span>and</span>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                v-model.trim="filters.brewed_before"
+                dense
+                outlined
+                label="Brewed max"
+                placeholder="MM/YYYY"
+                v-mask="'##/####'"
+                @keyup.enter.prevent="getBeers()"
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="5" xl="5" lg="5" md="5" sm="12" xs="12" class="pa-0" />
       </v-col>
-      <v-col cols="3" lg="2" sm="4" xs="4">
-        <v-text-field
-          v-model.trim="filters.abv_gt"
-          dense
-          outlined
-          label="Abv greater"
-          @keypress=validateNumber($event)
-          @keyup.enter.prevent="getBeers()"
-        >
-        </v-text-field>
-      </v-col>
-      <v-col cols="3" lg="2" sm="4" xs="4">
-        <v-text-field
-          type="number"
-          min="0"
-          v-model.number="filters.abv_lt"
-          dense
-          outlined
-          label="Abv less"
-          @keypress=validateNumber($event)
-          @keyup.enter.prevent="getBeers()"
-        >
-        </v-text-field>
-      </v-col>
-      <v-col cols="4" lg="2" sm="4" xs="4">
-        <v-text-field
-          v-model.trim="filters.brewed_after"
-          dense
-          outlined
-          label="Brewed after"
-          placeholder="MM/YYYY"
-          v-mask="'##/####'"
-          @keyup.enter.prevent="getBeers()"
-        >
-        </v-text-field>
-      </v-col>
-      <v-col cols="4" lg="2" sm="4" xs="4">
-        <v-text-field
-          v-model.trim="filters.brewed_before"
-          dense
-          outlined
-          label="Brewed before"
-          placeholder="MM/YYYY"
-          v-mask="'##/####'"
-          @keyup.enter.prevent="getBeers()"
-        >
-        </v-text-field>
-      </v-col>
-      <v-col cols="2">
-        <v-btn
+      <v-col cols="2" sm="3" class="pt-0 pl-5">
+         <v-btn
           elevation="2"
           small
           @click="getBeers()"
@@ -142,7 +167,8 @@ export default {
         abv_gt: '',
         abv_lt: '',
         brewed_before: '',
-        brewed_after: ''
+        brewed_after: '',
+        food: ''
       },
       showFilters: false
     }
@@ -170,28 +196,31 @@ export default {
         })
     },
     async handleFilters () {
-      const filtros = new URLSearchParams()
+      const filters = new URLSearchParams()
 
       if (this.filters.name) {
-        filtros.append('beer_name', this.filters.name)
+        filters.append('beer_name', this.filters.name)
       }
       if (this.filters.abv_gt) {
-        filtros.append('abv_gt', this.filters.abv_gt)
+        filters.append('abv_gt', this.filters.abv_gt)
       }
       if (this.filters.abv_lt) {
-        filtros.append('abv_lt', this.filters.abv_lt)
+        filters.append('abv_lt', this.filters.abv_lt)
       }
       if (this.filters.brewed_before) {
-        filtros.append('brewed_before', this.filters.brewed_before)
+        filters.append('brewed_before', this.filters.brewed_before)
       }
       if (this.filters.brewed_after) {
-        filtros.append('brewed_after', this.filters.brewed_after)
+        filters.append('brewed_after', this.filters.brewed_after)
+      }
+      if (this.filters.food) {
+        filters.append('food', this.filters.food.replace(' ', '_'))
       }
       this.resetPage()
-      filtros.append('page', this.$store.getters.getPage)
-      filtros.append('per_page', this.$store.getters.getRowsPerPage)
+      filters.append('page', this.$store.getters.getPage)
+      filters.append('per_page', this.$store.getters.getRowsPerPage)
 
-      return filtros
+      return filters
     },
     validateNumber (event) {
       UtilService.isNumber(event)
@@ -206,7 +235,8 @@ export default {
         abv_gt: '',
         abv_lt: '',
         brewed_before: '',
-        brewed_after: ''
+        brewed_after: '',
+        food: ''
       }
       this.$store.dispatch('resetPageAction')
       this.$store.dispatch('refreshFiltersAction')
@@ -223,6 +253,8 @@ export default {
       } else if (this.filters.brewed_after !== filtersStore.brewed_after) {
         validation = true
       } else if (this.filters.brewed_before !== filtersStore.brewed_before) {
+        validation = true
+      } else if (this.filters.food !== filtersStore.food) {
         validation = true
       }
       if (validation) {
